@@ -40,7 +40,7 @@ public class User {
             private Integer failedAttempts;
             @Enumerated(EnumType.STRING)
             @Column(nullable = false)
-            Status status;
+            private Status status;
             @Column
             private Boolean isLocked = false;
 
@@ -52,6 +52,8 @@ public class User {
             private LocalDateTime createdAt;
             @UpdateTimestamp
             private LocalDateTime updatedAt;
+            @Column
+            private LocalDateTime lastLoginAt;
 
 
             //role connection
@@ -63,6 +65,9 @@ public class User {
             @ManyToOne(fetch = FetchType.LAZY)
             @JoinColumn(name = "department_id")
             private Department department;
+
+
+
 
 
 
