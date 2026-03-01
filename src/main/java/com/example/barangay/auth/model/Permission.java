@@ -1,4 +1,4 @@
-package com.example.barangay.database;
+package com.example.barangay.auth.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

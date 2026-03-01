@@ -1,5 +1,6 @@
-package com.example.barangay.database;
+package com.example.barangay.audit;
 
+import com.example.barangay.auth.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

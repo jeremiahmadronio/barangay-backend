@@ -1,4 +1,4 @@
-package com.example.barangay.database;
+package com.example.barangay.auth.model;
 
 import com.example.barangay.enumerated.Status;
 import jakarta.persistence.*;
@@ -10,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
