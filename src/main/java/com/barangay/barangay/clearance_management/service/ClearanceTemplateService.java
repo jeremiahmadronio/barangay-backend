@@ -233,6 +233,26 @@ public class ClearanceTemplateService {
     }
 
 
+    // Sa loob ng ClearanceTemplateService.java
+
+    @Transactional(readOnly = true)
+    public List<ArchiveTemplateDTO> getAllTemplatesList() {
+        return certificateTemplateRepository.findAll().stream()
+                .map(this::mapToArchiveDTO)
+                .toList();
+    }
+
+    private ArchiveTemplateDTO mapToArchiveDTO(CertificateTemplate t) {
+        return new ArchiveTemplateDTO(
+                t.getId(),
+                t.getCertTitle(), // templateName
+                t.getLayoutStyle(),
+                t.isHasArchive(), // isArchived
+                t.getArchiveReason() // archiveRemarks
+        );
+    }
+
+
     @Transactional
     public void toggleTemplateArchive(Long id, ArchiveTemplateReponseDTO dto, User actor, String ipAddress) {
         CertificateTemplate template = certificateTemplateRepository.findById(id)

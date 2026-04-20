@@ -34,6 +34,17 @@ public class ClearanceTemplateController {
     }
 
 
+    @GetMapping("/archive-templates")
+    public ResponseEntity<List<ArchiveTemplateDTO>> getAllArchiveTemplates() {
+        List<ArchiveTemplateDTO> templates = clearanceTemplateService.getAllTemplatesList();
+
+        if (templates.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(templates);
+    }
+
     @GetMapping("/view-template")
     public ResponseEntity<List<TemplateResponseDTO>> getAllTemplates() {
         return ResponseEntity.ok(clearanceTemplateService.getAllTemplates());
