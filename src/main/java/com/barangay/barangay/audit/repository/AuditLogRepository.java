@@ -20,6 +20,9 @@ import java.util.Set;
 public interface AuditLogRepository extends JpaRepository<AuditLog,Long>  {
 
 
+
+
+
     Long countByCreatedAtAfter(LocalDateTime date);
 
     @Query("SELECT COUNT(a) FROM AuditLog a")

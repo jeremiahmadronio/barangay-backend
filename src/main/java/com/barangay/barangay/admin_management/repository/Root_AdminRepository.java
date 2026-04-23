@@ -109,4 +109,54 @@ public interface Root_AdminRepository extends JpaRepository<User, UUID> {
 
 
     boolean existsByUsernameIgnoreCase(String username);
+
+
+
+    long countByRole_RoleNameAndStatus(String roleName, Status status);
+
+
+
+    @Query(value = "SELECT COUNT(*) as count, TO_CHAR(created_at, 'Month') as period " +
+            "FROM users WHERE role_id = (SELECT id FROM roles WHERE role_name = :role) " +
+            "AND created_at BETWEEN :start AND :end " +
+            "GROUP BY period, date_trunc('month', created_at) " +
+            "ORDER BY date_trunc('month', created_at)", nativeQuery = true)
+    List<Object[]> getTrendByMonth(String role, LocalDateTime start, LocalDateTime end);
+
+    @Query(value = "SELECT COUNT(*) as count, TO_CHAR(created_at, 'DD') as period " +
+            "FROM users WHERE role_id = (SELECT id FROM roles WHERE role_name = :role) " +
+            "AND created_at BETWEEN :start AND :end " +
+            "GROUP BY period " +
+            "ORDER BY period", nativeQuery = true)
+    List<Object[]> getTrendByDay(String role, LocalDateTime start, LocalDateTime end);
+
+
+    @Query(value = """
+    SELECT COUNT(*) as count, period 
+    FROM (
+        SELECT TO_CHAR(created_at, :format) as period, 
+               date_trunc(:trunc, created_at) as trunc_date
+        FROM users 
+        WHERE role_id = (SELECT id FROM roles WHERE role_name = :role) 
+        AND status = 'ACTIVE' 
+        AND created_at BETWEEN :start AND :end
+    ) subquery
+    GROUP BY period, trunc_date 
+    ORDER BY trunc_date
+    """, nativeQuery = true)
+    List<Object[]> getTrendByRoleAndStatus(
+            @Param("role") String role,
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end,
+            @Param("format") String format,
+            @Param("trunc") String trunc
+    );
+
+
+    long countByRole_RoleNameAndStatusAndCreatedAtBetween(String role, Status status, LocalDateTime start, LocalDateTime end);
+
+    long countByRole_RoleNameAndStatusAndUpdatedAtBetween(String role, Status status, LocalDateTime start, LocalDateTime end);
+
+
+    long countByStatusAndUpdatedAtBetween(Status status, LocalDateTime start, LocalDateTime end);
 }
