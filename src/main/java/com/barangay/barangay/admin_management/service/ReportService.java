@@ -66,16 +66,18 @@ public class ReportService {
             String trunc = isDaily ? "day" : "month";
 
             List<String> labels = generateLabels(start, end, isDaily);
+        List<String> adminRoles = List.of("ROOT_ADMIN", "ADMIN");
 
             Map<String, Long> adminData = convertToMap(userRepository.getTrendByRoleAndStatus("ADMIN", start, end, format, trunc));
             Map<String, Long> residentData = convertToMap(residentRepository.getResidentTrend(start, end, format, trunc));
             Map<String, Long> officerData = convertToMap(employeeRepository.getEmployeeTrend(start, end, format, trunc));
-
+        Map<String, Long> regularUserData = convertToMap(userRepository.getTrendExcludingRoles(
+                adminRoles, start, end, format, trunc));
             List<Long> adminCounts = labels.stream().map(l -> adminData.getOrDefault(l, 0L)).toList();
             List<Long> residentCounts = labels.stream().map(l -> residentData.getOrDefault(l, 0L)).toList();
             List<Long> officerCounts = labels.stream().map(l -> officerData.getOrDefault(l, 0L)).toList();
-
-            return new GrowthTrendResponse(labels, adminCounts, residentCounts, officerCounts);
+            List<Long> userCounts = labels.stream().map(l -> regularUserData.getOrDefault(l, 0L)).toList();
+            return new GrowthTrendResponse(labels, adminCounts, residentCounts, officerCounts, userCounts);
         }
 
         private List<String> generateLabels(LocalDateTime start, LocalDateTime end, boolean isDaily) {

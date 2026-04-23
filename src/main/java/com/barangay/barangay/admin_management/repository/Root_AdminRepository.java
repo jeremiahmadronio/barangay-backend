@@ -153,6 +153,29 @@ public interface Root_AdminRepository extends JpaRepository<User, UUID> {
     );
 
 
+    // Sa UserRepository.java
+    @Query(value = """
+    SELECT COUNT(*) as count, period 
+    FROM (
+        SELECT TO_CHAR(u.created_at, :format) as period, 
+               date_trunc(:trunc, u.created_at) as trunc_date
+        FROM users u
+        JOIN roles r ON u.role_id = r.id
+        WHERE r.role_name NOT IN (:excludedRoles) 
+        AND u.status = 'ACTIVE' 
+        AND u.created_at BETWEEN :start AND :end
+    ) subquery
+    GROUP BY period, trunc_date 
+    ORDER BY trunc_date
+    """, nativeQuery = true)
+    List<Object[]> getTrendExcludingRoles(
+            @Param("excludedRoles") List<String> excludedRoles,
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end,
+            @Param("format") String format,
+            @Param("trunc") String trunc
+    );
+
     long countByRole_RoleNameAndStatusAndCreatedAtBetween(String role, Status status, LocalDateTime start, LocalDateTime end);
 
     long countByRole_RoleNameAndStatusAndUpdatedAtBetween(String role, Status status, LocalDateTime start, LocalDateTime end);

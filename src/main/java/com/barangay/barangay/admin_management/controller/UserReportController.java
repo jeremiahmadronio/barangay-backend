@@ -32,20 +32,20 @@ public class UserReportController {
         return ResponseEntity.ok(reportService.getStats());
     }
 
-    @GetMapping("/growth-trend")
-    public ResponseEntity<?> getTrend(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+        @GetMapping("/growth-trend")
+        public ResponseEntity<?> getTrend(
+                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
 
-        if (ChronoUnit.YEARS.between(start, end) >= 1) {
-            return ResponseEntity.badRequest().body("Maximum date range is 1 year only.");
-        }
-        if (start.isAfter(end)) {
-            return ResponseEntity.badRequest().body("Start date cannot be after end date.");
-        }
+            if (ChronoUnit.YEARS.between(start, end) >= 1) {
+                return ResponseEntity.badRequest().body("Maximum date range is 1 year only.");
+            }
+            if (start.isAfter(end)) {
+                return ResponseEntity.badRequest().body("Start date cannot be after end date.");
+            }
 
-        return ResponseEntity.ok(reportService.getGrowthTrend(start, end));
-    }
+            return ResponseEntity.ok(reportService.getGrowthTrend(start, end));
+        }
 
 
     @GetMapping("/module-records")

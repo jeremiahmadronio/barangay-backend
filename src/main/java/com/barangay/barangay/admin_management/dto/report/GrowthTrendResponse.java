@@ -6,5 +6,6 @@ public record GrowthTrendResponse(
         List<String> labels,
         List<Long> adminCounts,
         List<Long> residentCounts,
-        List<Long> officerCounts
+        List<Long> officerCounts,
+        List<Long> userCounts
 ) {}
