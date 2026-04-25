@@ -80,18 +80,9 @@ public class AuthenticationService {
             user.setLastFailedAttempt(now);
 
             String lockMsg = null;
-            if (attempts == 3) {
+            if (attempts >= 5) {
                 user.setIsLocked(true);
-                user.setLockUntil(now.plusMinutes(5));
-                lockMsg = "Account locked for 5 minutes (3rd failed attempt)";
-            } else if (attempts == 5) {
-                user.setIsLocked(true);
-                user.setLockUntil(now.plusMinutes(15));
-                lockMsg = "Account locked for 15 minutes (5th failed attempt)";
-            } else if (attempts >= 10) {
-                user.setIsLocked(true);
-                user.setLockUntil(now.plusHours(24));
-                lockMsg = "Account locked for 24 hours (10+ failed attempts)";
+                lockMsg = "Account locked please contact your administrator)";
             }
 
             userRepository.saveAndFlush(user);
@@ -102,7 +93,6 @@ public class AuthenticationService {
             throw new BadCredentialsException("Invalid email or password. Attempt " + attempts + ".");
         }
 
-        // --- 4. SUCCESS: RESET & SEND PRIMARY EMAIL OTP ---
         user.setFailedAttempts(0);
         user.setIsLocked(false);
         user.setLockUntil(null);
@@ -224,11 +214,9 @@ public class AuthenticationService {
 
     @Transactional
     public LoginResponse changePasswordNewAccount(ChangePasswordRequest request, String ipAddress) {
-        // 1. Fetch User - Gamitin ang systemEmail para consistent sa repository
         User user = userRepository.findBySystemEmail(request.email())
                 .orElseThrow(() -> new UsernameNotFoundException("No account found with this email: " + request.email()));
 
-        // 2. Validation: Dapat 'new account' lang ang pwedeng dumaan dito
         if (!user.isNewAccount()) {
             auditLogService.log(user, null, "SECURITY", Severity.WARNING,
                     "Unauthorized password change attempt on existing account", ipAddress, null, null, null);
@@ -242,7 +230,7 @@ public class AuthenticationService {
 
         // 4. Update Account Security
         user.setPassword(passwordEncoder.encode(request.newPassword()));
-        user.setNewAccount(false); // Mark as not new anymore
+        user.setNewAccount(false);
         user.setLastLoginAt(LocalDateTime.now());
         user.setUsername(request.username());
         userRepository.save(user);
@@ -371,6 +359,8 @@ public class AuthenticationService {
         user.setPassword(passwordEncoder.encode(request.newPassword()));
         user.setMfaCode(null);
         user.setMfaExpiry(null);
+        user.setNewAccount(false);
+
         userRepository.save(user);
 
         auditLogService.log(

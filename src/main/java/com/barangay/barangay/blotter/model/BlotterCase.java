@@ -84,6 +84,7 @@ public class BlotterCase {
     @JoinColumn(name = "incident_detail_id")
     private IncidentDetail incidentDetail;
 
+    @Enumerated(EnumType.STRING)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id")
     private Department department;

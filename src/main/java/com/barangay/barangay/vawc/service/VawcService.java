@@ -128,6 +128,10 @@ public class VawcService {
         }
     }
 
+
+
+
+
     private CaseSummaryDTO toListResponse(BlotterCase bc) {
         String victim = "Unknown Victim";
         if (bc.getComplainant() != null && bc.getComplainant().getPerson() != null) {

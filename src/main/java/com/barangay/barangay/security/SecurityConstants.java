@@ -25,8 +25,6 @@ public class SecurityConstants {
 
     public static final String[] ROOT_ADMIN_ENDPOINTS = {
             //audit endpoint
-            "/api/v1/audit/**",
-            "/api/v1/user-management/stats/global",
             //departments endpoint
             "/api/v1/departments/options",
 
@@ -36,9 +34,7 @@ public class SecurityConstants {
 
             //
             "/api/v1/users/create-admin",
-            "/api/v1/users/stats",
-            "/api/v1/users/admin-table",
-            "/api/v1/users/update-admin",
+                "/api/v1/users/update-admin",
     };
 
     public static final String[] ALLOWED_ORIGINS = {

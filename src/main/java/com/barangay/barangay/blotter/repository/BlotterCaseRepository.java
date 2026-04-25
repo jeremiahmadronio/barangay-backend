@@ -7,6 +7,7 @@ import com.barangay.barangay.department.model.Department;
 import com.barangay.barangay.enumerated.CaseStatus;
 import com.barangay.barangay.enumerated.CaseType;
 
+import com.barangay.barangay.enumerated.Departments;
 import com.barangay.barangay.lupon.dto.ArchiveLuponStats;
 import com.barangay.barangay.lupon.dto.dashboard.CaseStatusDistributionDTO;
 import com.barangay.barangay.lupon.dto.dashboard.RecentCaseDTO;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface BlotterCaseRepository extends JpaRepository<BlotterCase, Long>, JpaSpecificationExecutor<BlotterCase> {
@@ -32,7 +34,6 @@ public interface BlotterCaseRepository extends JpaRepository<BlotterCase, Long>,
     Optional<BlotterCase> findByIdAndIsArchivedFalse(Long id);
 
     boolean existsByBlotterNumber(String blotterNumber);
-
 
 
     long countByCaseTypeAndDepartment(CaseType caseType, Department department);

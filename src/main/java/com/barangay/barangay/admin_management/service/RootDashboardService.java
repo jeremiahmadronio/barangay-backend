@@ -1,5 +1,7 @@
 package com.barangay.barangay.admin_management.service;
 
+import com.barangay.barangay.admin_management.dto.dashboard.ResidentTrendDTO;
+import com.barangay.barangay.admin_management.repository.SystemAdminResidentRepository;
 import com.barangay.barangay.audit.repository.AuditLogRepository;
 import com.barangay.barangay.admin_management.dto.ActivityOverviewDTO;
 import com.barangay.barangay.admin_management.dto.DashboardStats;
@@ -17,7 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +31,7 @@ public class RootDashboardService {
 
     private final Root_AdminRepository userRepository;
     private final AuditLogRepository auditLogRepository;
-    private final ResidentRepository residentRepository;
+    private final SystemAdminResidentRepository residentRepository;
     private final EmployeeRepository employeeRepository;
 
 
@@ -99,5 +105,28 @@ public class RootDashboardService {
     @Transactional(readOnly = true)
     public List<RecentSystemAction> getRecentActions() {
         return auditLogRepository.findTop5RecentActions();
+    }
+
+
+    public ResidentTrendDTO getResidentGrowthTrend() {
+        List<Object[]> results = residentRepository.getRawResidentTrend();
+
+        Map<String, Long> countMap = results.stream()
+                .collect(Collectors.toMap(
+                        res -> res[1].toString(), // Month Label (e.g., "Nov")
+                        res -> ((Number) res[0]).longValue() // Count
+                ));
+
+        List<String> labels = new ArrayList<>();
+        List<Long> counts = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM");
+
+        for (int i = 5; i >= 0; i--) {
+            String monthLabel = LocalDateTime.now().minusMonths(i).format(formatter);
+            labels.add(monthLabel);
+            counts.add(countMap.getOrDefault(monthLabel, 0L));
+        }
+
+        return new ResidentTrendDTO(labels, counts);
     }
 }

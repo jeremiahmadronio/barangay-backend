@@ -3,6 +3,7 @@ package com.barangay.barangay.admin_management.controller;
 import com.barangay.barangay.admin_management.dto.ActivityOverviewDTO;
 import com.barangay.barangay.admin_management.dto.DashboardStats;
 import com.barangay.barangay.admin_management.dto.RecentSystemAction;
+import com.barangay.barangay.admin_management.dto.dashboard.ResidentTrendDTO;
 import com.barangay.barangay.admin_management.repository.Root_AdminRepository;
 import com.barangay.barangay.admin_management.service.RootDashboardService;
 import lombok.RequiredArgsConstructor;
@@ -37,5 +38,11 @@ public class DashboardController {
     @GetMapping("/recent-actions")
     public ResponseEntity<List<RecentSystemAction>> getRecentActions() {
         return ResponseEntity.ok(rootDashboardService.getRecentActions());
+    }
+
+
+    @GetMapping("/last-six-months")
+    public ResponseEntity<ResidentTrendDTO> getResidentTrend() {
+        return ResponseEntity.ok(rootDashboardService.getResidentGrowthTrend());
     }
 }

@@ -41,4 +41,17 @@ public interface SystemAdminResidentRepository extends JpaRepository<Resident,Lo
 
     long countByStatusAndUpdatedDateBetween(ResidentStatus status, LocalDateTime start, LocalDateTime end);
 
+
+
+    @Query(value = """
+    SELECT COUNT(*) as count, 
+           TO_CHAR(date_trunc('month', created_at), 'Mon') as month_label,
+           date_trunc('month', created_at) as sort_date
+    FROM resident
+    WHERE created_at >= CURRENT_DATE - INTERVAL '5 months'
+    AND status = 'ACTIVE'
+    GROUP BY month_label, sort_date
+    ORDER BY sort_date ASC
+""", nativeQuery = true)
+    List<Object[]> getRawResidentTrend();
 }

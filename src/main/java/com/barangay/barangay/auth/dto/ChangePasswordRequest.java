@@ -11,5 +11,6 @@ public record ChangePasswordRequest(
         String newPassword,
         @NotBlank
         String confirmPassword,
+
         String username
 ) {}

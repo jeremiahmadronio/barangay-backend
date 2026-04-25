@@ -11,6 +11,7 @@ import com.barangay.barangay.blotter.model.Hearing;
 import com.barangay.barangay.blotter.model.HearingMinutes;
 import com.barangay.barangay.blotter.repository.*;
 import com.barangay.barangay.department.model.Department;
+import com.barangay.barangay.department.repository.DepartmentRepository;
 import com.barangay.barangay.enumerated.CaseStatus;
 import com.barangay.barangay.enumerated.CaseType;
 import com.barangay.barangay.enumerated.Departments;
@@ -46,7 +47,7 @@ public class BlotterServiceViewOnly {
     private final HearingMinutesRepository hearingMinutesRepository;
     private final CaseNoteRepository caseNoteRepository;
     private final PangkatCompositionRepository pangkatCompositionRepository;
-    private final UserManagementRepository userManagementRepository;
+    private final DepartmentRepository departmentRepository;
 
 
 
@@ -77,7 +78,7 @@ public class BlotterServiceViewOnly {
                 natureId,
                 start,
                 end,
-                deptIds,
+                null,
                 targetType
         );
 
@@ -195,6 +196,11 @@ public class BlotterServiceViewOnly {
                 bc.getStatus() != null ? bc.getStatus().name() : "RECORDED"
         );
     }
+
+
+
+
+
 
 
 
@@ -489,6 +495,8 @@ public class BlotterServiceViewOnly {
                 blotterRepository.countByCaseTypeAndStatusAndDepartment(formal, CaseStatus.UNDER_MEDIATION, userDept)
         );
     }
+
+
 
 
 

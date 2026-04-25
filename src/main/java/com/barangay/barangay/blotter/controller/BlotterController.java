@@ -196,6 +196,8 @@ public class BlotterController {
         return ResponseEntity.ok(blotterServiceViewOnly.getFormalStatsForUser(userDetails.user()));
     }
 
+
+
     @GetMapping("/records-stats")
     public ResponseEntity<FtrSummaryStatsDTO> getRecordsSummary(
             @AuthenticationPrincipal CustomUserDetails userDetails

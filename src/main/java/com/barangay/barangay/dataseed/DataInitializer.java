@@ -141,6 +141,20 @@ public class DataInitializer implements CommandLineRunner {
         createPermIfNotFound("Restore Archived");
         createPermIfNotFound("Case Re-open");
 
+            createPermIfNotFound("View blotter cases");
+            createPermIfNotFound("View blotter reports");
+            createPermIfNotFound("View lupon cases");
+            createPermIfNotFound("View lupon reports");
+            createPermIfNotFound("View vawc reports");
+            createPermIfNotFound("View vawc cases");
+            createPermIfNotFound("View bcpc reports");
+            createPermIfNotFound("View bcpc cases");
+            createPermIfNotFound("View clerance issued");
+            createPermIfNotFound("View clerance revenue");
+            createPermIfNotFound("View ftjs issued");
+            createPermIfNotFound("View ftjs reports");
+
+
 
         createEvidenceTypeIfNotFound("Medical Certificate");
         createEvidenceTypeIfNotFound("Medico-Legal Report");
@@ -225,6 +239,8 @@ public class DataInitializer implements CommandLineRunner {
         createRoleIfNotFound("Secretary");
         createRoleIfNotFound("Members");
         createRoleIfNotFound("Chairman");
+        createRoleIfNotFound("Officials");
+        createRoleIfNotFound("Captain");
 
 
         String rawPassword = "82219800Jeremiah!";
