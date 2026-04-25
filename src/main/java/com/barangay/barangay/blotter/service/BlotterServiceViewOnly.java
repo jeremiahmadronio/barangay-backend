@@ -80,7 +80,7 @@ public class BlotterServiceViewOnly {
                 end,
                 null,
                 targetType
-        );
+        ).and((root, query, cb) -> cb.equal(root.get("isArchived"), false));
 
         return blotterRepository.findAll(spec, pageable).map(this::mapToSummaryDTO);
     }
